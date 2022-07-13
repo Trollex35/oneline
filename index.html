@@ -17,14 +17,14 @@
     
     var DelayAds = true;
 
-    setTimeout(() => DelayAds = false, 80000);
+    setTimeout(() => DelayAds = false, 40000);
 
     function ShowAD() {
         if (!DelayAds) {
           vkBridge.send("VKWebAppShowNativeAds", { ad_format: "interstitial" })
             .then(data =>{  
               DelayAds = true;
-              setTimeout(() => DelayAds = false, 80000);
+              setTimeout(() => DelayAds = false, 60000);
             })
             .catch(error => console.log('Ad error'));
         }
