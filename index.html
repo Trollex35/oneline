@@ -1,1 +1,84 @@
-eeeeeee
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Cache-Control" content="no-cache">
+  <title>1Line</title>
+  <script src="Build/UnityLoader.js"></script>
+  <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
+  <script src="https://vk.com/js/api/xd_connection.js?2"></script>
+  <script src="https://ad.mail.ru/static/admanhtml/rbadman-html5.min.js"></script>
+  <script src="https://vk.com/js/api/adman_init.js"></script>
+  <script>
+    var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Golovolomka.json", { onProgress: customProgress });
+
+
+    function ShowAD() {
+      vkBridge.send("VKWebAppShowNativeAds", { ad_format: "interstitial" })
+        .then(data => console.log(data.result))
+        .catch(error => console.log('Ad error'));
+    }
+
+
+    function ShowAD_Rewarded() {
+
+      vkBridge.send("VKWebAppShowNativeAds", { ad_format: "reward" })
+        .then(data => {
+          if (data.result) {
+            unityInstance.SendMessage('HOOKJS', 'RewardedOK');
+          }
+        })
+        .catch(error => {
+          console.log('Ad error');
+        });
+
+    }
+
+    function Share() {
+      vkBridge.send("VKWebAppShare")
+        .then(data => console.log(data.result))
+        .catch(error => console.log(error));
+    }
+
+
+    function Friends() {
+      vkBridge.send("VKWebAppShowInviteBox", {})
+        .then(data => console.log(data.success))
+        .catch(error => console.log(error));
+    }
+
+    function customProgress(unityInstance, progress) {
+
+      const fill = document.getElementById("loaderFill");
+      fill.style.width = progress * 100 + "%";
+
+      if (progress === 1) {
+        const loader = document.getElementById("loader");
+        loader.remove();
+      }
+    }
+
+
+  </script>
+</head>
+
+<body style="width: 100vw; height: 100vh; margin: auto; background-color: #ffffff; overflow: hidden;">
+  <div id="unityContainer" style="width: 100%; height: 100%; margin: auto"></div>
+
+
+  <div id="loader"
+    style="border-radius: 10px; top: 0px;width: 100%; height: 100%; position: fixed; background-color: #ffffff;">
+    <img src="Build/icon.png"
+      style="border-radius: 10px; margin-left: calc(50vw - 70px); margin-top: calc(50vh - 200px); width: 140px; height: 140px;" />
+    <div
+      style="overflow: hidden; border-radius: 10px; margin-left: calc(50vw - 100px); margin-top: 30px; width: 200px; height: 25px; background-color: #D4CDDD">
+      <div id="loaderFill" style="width: 0%; height: 100%; background-color: #E403FF;"></div>
+    </div>
+  </div>
+</body>
+
+</html>
+
+</html>
