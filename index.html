@@ -14,11 +14,20 @@
   <script>
     var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Golovolomka.json", { onProgress: customProgress });
 
+    
+    var DelayAds = true;
+
+    setTimeout(() => DelayAds = false, 80000);
 
     function ShowAD() {
-      vkBridge.send("VKWebAppShowNativeAds", { ad_format: "interstitial" })
-        .then(data => console.log(data.result))
-        .catch(error => console.log('Ad error'));
+        if (!DelayAds) {
+          vkBridge.send("VKWebAppShowNativeAds", { ad_format: "interstitial" })
+            .then(data =>{  
+              DelayAds = true;
+              setTimeout(() => DelayAds = false, 80000);
+            })
+            .catch(error => console.log('Ad error'));
+        }
     }
 
 
